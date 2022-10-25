@@ -14,11 +14,20 @@ Since this Day_2_Assignment.md is commited in Day_2.
 cd Academy
 mkdir Day_2
 ```
-In directory ../Academy/ we initialize git by git init.
+In directory ../Academy we initialize git by git init.
 
 ```bash
 git init
 ```
-As a result ../Academy/ folder will have a hidden folder called .git as seen below
+As a result ../Academy folder will have a hidden folder called .git as seen below
 
 ![alt text](screenshot/git_init.png "git init succesful")
+
+## Add & Commit
+Whenever there are changes in local machine we need to use
+
+```bash
+git add .
+git commit -m "Example Commit"
+```
+For example let us create a file called "test_notepad.txt" in ../Academy/Day_2
