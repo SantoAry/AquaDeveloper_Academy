@@ -19,4 +19,6 @@ In directory ../Academy/ we initialize git by git init.
 ```bash
 git init
 ```
+As a result ../Academy/ folder will have a hidden folder called .git as seen below
 
+![alt text](Day_2/screenshots/git_init.png "git init succesful")
