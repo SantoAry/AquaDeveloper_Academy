@@ -70,3 +70,19 @@ By all the previous step, we can finally push our local files into our GitHub re
 git push origin master
 ```
 The result will be shown in the following in terminal
+
+```bash
+PS C:\Users\Arymurti\Documents\eFishery\Academy> git push origin master
+Enumerating objects: 12, done.
+Counting objects: 100% (12/12), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (9/9), 1.59 KiB | 541.00 KiB/s, done.
+Total 9 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), done.
+To https://github.com/SantoAry/AquaDeveloper_Academy.git
+   e2cf96c..7d0bc93  master -> master
+```
+And we could see the changes in the GitHub repository as the following
+
+![alt text](screenshot/test_notepad_commit.png "Push to GitHub repository succesful")
