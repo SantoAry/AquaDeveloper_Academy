@@ -126,16 +126,20 @@ To create a new branch we use
 ```bash
 git checkout -b new_branch
 ```
-and terminal shows
+Terminal shows
 
 ```bash
 PS C:\Users\Arymurti\Documents\eFishery\Academy> git checkout -b new_branch  
 Switched to a new branch 'new_branch'
 ```
 
-once again do git commit with message "New Branch"
+To commit to our new branch, we once again do git commit with message "New Branch" and git push origin new_branch
 
 ```bash
 git add .
 git commit -m "New Branch"
+git push origin new_branch
 ```
+We therefore have created a new branch
+
+![alt text](screenshot/new_branch.png "A New Branch")
