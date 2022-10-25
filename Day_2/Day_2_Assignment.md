@@ -143,3 +143,69 @@ git push origin new_branch
 We therefore have created a new branch
 
 ![alt text](screenshot/new_branch.png "A New Branch")
+
+## Merging another branch to master
+
+Let's say we have made a bug fix in new_branch called "bug_fix_note.md" and we want to merge it to master. We can do that first by
+
+```bash
+git pull origin new_branch
+```
+Then
+
+```bash
+git add .
+git commit -m "Merging from new_branch"
+```
+Then switch to master branch by
+
+```bash
+git checkout master
+```
+We merge new_branch with master by
+
+```bash
+git merge new_branch
+```
+In terminal it will show the changes
+
+```bash
+PS C:\Users\Arymurti\Documents\eFishery\Academy> git merge new_branch        
+Updating 1a2c933..42ea659
+Fast-forward
+ Day_2/Day_2_Assignment.md       |  59 +++++++++++++++++++++++++++++++++++++++-
+ Day_2/bug_fix_note.md           |   1 +
+ Day_2/screenshot/new_branch.png | Bin 0 -> 28578 bytes
+ 3 files changed, 59 insertions(+), 1 deletion(-)
+ create mode 100644 Day_2/bug_fix_note.md
+ create mode 100644 Day_2/screenshot/new_branch.png
+```
+We then see "bug_fix_note.md" created in master branch
+
+Finally, we push our new master to origin master by
+
+```bash
+git push origin master
+```
+With terminal output
+
+```bash
+PS C:\Users\Arymurti\Documents\eFishery\Academy> git push origin master      
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 26.32 KiB | 8.77 MiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.        
+To https://github.com/SantoAry/AquaDeveloper_Academy.git
+   1a2c933..42ea659  master -> master
+```
+As a result we could seee that branch master has been merged
+
+![alt text](screenshot/merged.png "Merged")
+
+It could be seen that for "bug_fix_note.md" the message is still "for merging" rather than "Merging from new_branch". It is because "bug_fix_note.md" does not change anything in branch master and therefore retains it's original message in branch new_branch.
+
+## Closing statement
+In this document, I have demonstrated a step by step tutorial of using git from initializing to push and to merging. It will undoubtedly be beneficial for the next lessons in AquaDeveloper. 
