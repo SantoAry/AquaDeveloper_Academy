@@ -21,4 +21,4 @@ git init
 ```
 As a result ../Academy/ folder will have a hidden folder called .git as seen below
 
-![alt text](Day_2/screenshot/git_init.png "git init succesful")
+![alt text](screenshot/git_init.png "git init succesful")
