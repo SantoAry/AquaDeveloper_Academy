@@ -49,3 +49,8 @@ inner join customers c
 inner join products p 
 	on p.id = o.customer_id 
 order by order_date; 
+
+
+select * from orders cross join customers;
+select * from orders cross join products;
+select * from orders cross join customers cross join products;
