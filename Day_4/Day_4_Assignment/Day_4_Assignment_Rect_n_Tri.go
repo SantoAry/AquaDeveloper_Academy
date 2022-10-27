@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	
-	//input variable declared
+	//input variable need to be declared first
 	fmt.Print("Masukkan angka integer: ")
 	var n int
 	fmt.Scanf("%d", &n)
