@@ -10,7 +10,8 @@ func main() {
 	fmt.Scanf("%d", &n)
 	fmt.Printf("Input adalah: %d\n", n)
 
-	//looping variables declared
+	//looping variables declared 
+	//could also use i := 1 in loop but I prefer declaring all variables beforehand
 	var i int = 0
 	var j int = 0
 	var k int = 0
@@ -42,9 +43,9 @@ func main() {
 		fmt.Println("\nIni yg Ganjil")
 
 		// create n number of row
-		for i:=1; i<=n; i++{
+		for i=1; i<=n; i++{
 			//create i number of column
-			for j:=1;j<=i;j++{
+			for j=1;j<=i;j++{
 				fmt.Print("*")
 			}
 			fmt.Print("\n")
