@@ -51,8 +51,12 @@ func ProductRoutes(echoApp *echo.Echo, productHandler *handler.ProductHandler) {
 	//To get data by ID
 	echoGroup.GET("/products/:product_id", productHandler.GetOneProduct)
 
-	//Dengan query param dapatkan list harga dengan filter
-	echoGroup.GET("/products/filter", productHandler.FilterProduct)
+	//Filter
+	//Search by name product
+	echoGroup.GET("/products/search", productHandler.SearchProducts)
+
+	//Order by price (descending and ascending)
+	echoGroup.GET("/products/sort", productHandler.SortProducts)
 
 	//Insert Product
 	echoGroup.POST("/products", productHandler.CreateProduct)

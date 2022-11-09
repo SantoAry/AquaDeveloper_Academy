@@ -4,6 +4,9 @@ import (
 	"e-commerce/entity"
 	"e-commerce/entity/response"
 	"e-commerce/repository"
+	"strconv"
+
+	"strings"
 
 	"github.com/jinzhu/copier"
 )
@@ -11,8 +14,9 @@ import (
 type IProductUseCase interface {
 	CreateProduct(product response.CreateProductResponse) error
 	GetProductList() ([]response.GetProductResponse, error)
-	GetOneProduct(product_id string) (response.GetProductResponse, error)
-	FilterProducts(product_name string) ([]response.GetProductResponse, error)
+	GetOneProduct(product_id int) (response.GetProductResponse, int64, error)
+	SearchProducts(product_name string) ([]response.GetProductResponse, error)
+	SortProducts(sort string) ([]response.GetProductResponse, error)
 }
 
 type ProductUsecase struct {
@@ -47,23 +51,37 @@ func (p ProductUsecase) GetProductList() ([]response.GetProductResponse, error) 
 	return productResponse, nil
 }
 
-func (p ProductUsecase) GetOneProduct(product_id string) ([]response.GetProductResponse, error) {
+func (p ProductUsecase) GetOneProduct(id string) ([]response.GetProductResponse, int64, error) {
+	product_id, _ := strconv.ParseInt(id, 0, 64)
 	products, err := p.ProductRepository.GetOneProduct(product_id)
 	if err != nil {
-		return nil, nil
+		return nil, 0, nil
 	}
 	OneProductResponse := []response.GetProductResponse{}
 	copier.Copy(&OneProductResponse, &products)
-	return OneProductResponse, nil
+	return OneProductResponse, product_id, nil
 }
 
-func (p ProductUsecase) FilterProducts(product_name string) ([]response.GetProductResponse, error) {
-	filtered_products, err := p.ProductRepository.FilterProducts(product_name)
+func (p ProductUsecase) SearchProducts(product_name string) ([]response.GetProductResponse, error) {
+	products, err := p.ProductRepository.SearchProducts(product_name)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
-	productResponse := []response.GetProductResponse{}
-	copier.Copy(&productResponse, &filtered_products) //Override dari variabel kanan ke kiri
-	return productResponse, nil
+	filtered_products := []response.GetProductResponse{}
+	copier.Copy(&filtered_products, &products) //Override dari variabel kanan ke kiri
+	return filtered_products, nil
+}
+
+func (p ProductUsecase) SortProducts(sort string) ([]response.GetProductResponse, error) {
+	sort = strings.ToLower(sort)
+	products, err := p.ProductRepository.SortProducts(sort)
+	if err != nil {
+		return nil, err
+	}
+
+	sorted_products := []response.GetProductResponse{}
+	copier.Copy(&sorted_products, &products) //Override dari variabel kanan ke kiri
+
+	return sorted_products, nil
 }

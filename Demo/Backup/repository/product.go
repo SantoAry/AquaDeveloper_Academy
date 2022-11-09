@@ -9,8 +9,9 @@ import (
 type IProductRepository interface {
 	CreateProduct(product entity.Product) error
 	GetAllProducts() ([]entity.Product, error)
-	GetOneProduct(product_id string) ([]entity.Product, error)
-	FilterProducts(product_name string) ([]entity.Product, error)
+	GetOneProduct(product_id int64) ([]entity.Product, error)
+	SearchProducts(product_name string) ([]entity.Product, error)
+	SortProducts(sort string) ([]entity.Product, error)
 }
 
 type ProductRepository struct {
@@ -38,21 +39,43 @@ func (p ProductRepository) GetAllProducts() ([]entity.Product, error) {
 	return products, nil
 }
 
-func (p ProductRepository) GetOneProduct(product_id string) ([]entity.Product, error) {
-	var products []entity.Product
-	if err := p.db.Find(&products, product_id).Error; err != nil {
+func (p ProductRepository) GetOneProduct(product_id int64) ([]entity.Product, error) {
+	var product []entity.Product
+	if err := p.db.Find(&product, product_id).Error; err != nil {
 		return nil, nil
 	}
-	return products, nil
+	return product, nil
 }
 
 // By name
-func (p ProductRepository) FilterProducts(product_name string) ([]entity.Product, error) {
+func (p ProductRepository) SearchProducts(product_name string) ([]entity.Product, error) {
 	var filtered_products []entity.Product
-	if err := p.db.Where("product_name LIKE ?", "%"+product_name).Find(&filtered_products).Error; err != nil {
-		return nil, nil
+	if err := p.db.Where("product_name LIKE ?", "%"+product_name+"%").Find(&filtered_products).Error; err != nil {
+		return nil, err
 	}
 	return filtered_products, nil
 }
 
-//p.db.Where("product_name <> ?", product_name).Find(&filtered_products)
+// By Price Order
+func (p ProductRepository) SortProducts(sort string) ([]entity.Product, error) {
+	var sort_products []entity.Product
+	var err error
+	if sort == "ascending" || sort == "asc" {
+		if err = p.db.Order("price asc").Find(&sort_products).Error; err != nil {
+			return nil, err
+		}
+		return sort_products, nil
+	}
+
+	if sort == "descending" || sort == "desc" {
+		if err = p.db.Order("price desc").Find(&sort_products).Error; err != nil {
+			return nil, err
+		}
+		return sort_products, nil
+	} else {
+		if err = p.db.Order("price " + sort).Find(&sort_products).Error; err != nil {
+			return nil, err
+		}
+		return sort_products, nil
+	}
+}
