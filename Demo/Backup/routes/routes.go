@@ -10,17 +10,29 @@ import (
 func UserRoutes(echoApp *echo.Echo, userHandler *handler.UserHandler) {
 	echoGroup := echoApp.Group("api/e-commerce/v1")
 
-	echoGroup.GET("/users", userHandler.GetList)
-
-	//To get data by ID
-	echoGroup.GET("/users/:id", userHandler.GetOne)
+	//Insert user data
 	echoGroup.POST("/users", userHandler.CreateUser)
 
-	//To update data by ID
-	echoGroup.PUT("/users/:id", userHandler.UpdateData)
+	//Get all user data
+	echoGroup.GET("/users", userHandler.GetAllUsers)
+
+	//To get user data by ID
+	echoGroup.GET("/users/:id", userHandler.GetOneUser)
+
+	//To check if empty, then update data by ID (Only update non Primary Key allowed)
+	echoGroup.PUT("/users/:id", userHandler.UpdateUser)
+
+	//For existing data, update data by ID
+	echoGroup.PATCH("/users/:id", userHandler.UpdateUser)
 
 	//To delete data by ID
-	echoGroup.DELETE("/users/:id", userHandler.DeleteData)
+	echoGroup.DELETE("/users/:id", userHandler.DeleteUser)
+
+	//Create role
+	echoGroup.POST("/roles", userHandler.CreateRole)
+
+	//Get all roles
+	echoGroup.GET("/roles", userHandler.GetAllRoles)
 
 	//Insert Cart
 	//r.Post("/cart_id", ....)

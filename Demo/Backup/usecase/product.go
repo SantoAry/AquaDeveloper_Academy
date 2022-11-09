@@ -15,7 +15,7 @@ type IProductUseCase interface {
 	CreateProduct(product response.CreateProductResponse) error
 	GetProductList() ([]response.GetProductResponse, error)
 	GetOneProduct(product_id int) (response.GetProductResponse, int64, error)
-	SearchProducts(product_name string) ([]response.GetProductResponse, error)
+	SearchProducts(product_name, sort string) ([]response.GetProductResponse, error)
 	SortProducts(sort string) ([]response.GetProductResponse, error)
 }
 
@@ -62,8 +62,8 @@ func (p ProductUsecase) GetOneProduct(id string) ([]response.GetProductResponse,
 	return OneProductResponse, product_id, nil
 }
 
-func (p ProductUsecase) SearchProducts(product_name string) ([]response.GetProductResponse, error) {
-	products, err := p.ProductRepository.SearchProducts(product_name)
+func (p ProductUsecase) SearchProducts(product_name, sort string) ([]response.GetProductResponse, error) {
+	products, err := p.ProductRepository.SearchProducts(product_name, sort)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"e-commerce/entity"
+	"e-commerce/entity/sub_entity"
 
 	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
@@ -21,10 +22,13 @@ func Database() {
 }
 
 func AutoMigrate() {
-	DB.AutoMigrate(&entity.User{})
-	DB.AutoMigrate(&entity.Product{})
-	DB.AutoMigrate(&entity.Cart{})
-	DB.AutoMigrate(&entity.CartDetails{})
-	DB.AutoMigrate(&entity.Orders{})
-	DB.AutoMigrate(&entity.Invoice{})
+	DB.AutoMigrate(
+		&entity.User{},
+		&entity.Role{},
+		&entity.Product{},
+		&sub_entity.Cart{},
+		&sub_entity.CartDetails{},
+		&sub_entity.Orders{},
+		&sub_entity.Invoice{},
+	)
 }

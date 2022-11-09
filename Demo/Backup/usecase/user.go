@@ -10,10 +10,15 @@ import (
 )
 
 type IUserUseCase interface {
+	//Role
+	CreateRole(role response.CreateRoleResponse) error
+	GetAllRoles() ([]response.GetRoleResponse, error)
+
+	//User
 	CreateUser(user response.CreateUserResponse) error
-	GetListUser() ([]response.GetUserResponse, error)
-	GetOne(id string) (response.GetUserResponse, error)
-	Update(id string, user entity.User) error
+	GetAllUsers() ([]response.GetUserResponse, error)
+	GetOneUser(id string) (response.GetUserResponse, error)
+	UpdateUser(id string, user entity.User) error
 	DeleteUser(id string) (response.DeleteUserResponse, error)
 }
 
@@ -25,11 +30,12 @@ func NewUserUsecase(userRepository repository.IUserRepository) *UserUsecase {
 	return &UserUsecase{userRepository}
 }
 
-func (u UserUsecase) CreateUser(req response.CreateUserResponse) error {
-	users := entity.User{}
-	copier.Copy(&users, &req)
+// Roles
+func (u UserUsecase) CreateRole(req response.CreateRoleResponse) error {
+	role := entity.Role{}
+	copier.Copy(&role, &req)
 
-	err := u.UserRepository.Create(users)
+	err := u.UserRepository.CreateRole(role)
 	if err != nil {
 		return err
 	}
@@ -37,10 +43,35 @@ func (u UserUsecase) CreateUser(req response.CreateUserResponse) error {
 	return nil
 }
 
-func (u UserUsecase) GetList() ([]response.GetUserResponse, error) {
-	users, err := u.UserRepository.GetAll()
+func (u UserUsecase) GetAllRoles() ([]response.GetRoleResponse, error) {
+	roles, err := u.UserRepository.GetAllRoles()
 	if err != nil {
-		return nil, nil
+		return nil, err
+	}
+
+	roleResponse := []response.GetRoleResponse{}
+	copier.Copy(&roleResponse, &roles) //Override dari variabel kanan ke kiri
+	return roleResponse, nil
+
+}
+
+// Users
+func (u UserUsecase) CreateUser(req response.CreateUserResponse) error {
+	users := entity.User{}
+	copier.Copy(&users, &req)
+
+	err := u.UserRepository.CreateUser(users)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u UserUsecase) GetAllUsers() ([]response.GetUserResponse, error) {
+	users, err := u.UserRepository.GetAllUsers()
+	if err != nil {
+		return nil, err
 	}
 
 	userResponse := []response.GetUserResponse{}
@@ -50,10 +81,10 @@ func (u UserUsecase) GetList() ([]response.GetUserResponse, error) {
 }
 
 // Usecase for GetOne
-func (u UserUsecase) GetOne(id string) ([]response.GetUserResponse, error) {
-	users, err := u.UserRepository.GetOne(id)
+func (u UserUsecase) GetOneUser(id string) ([]response.GetUserResponse, error) {
+	users, err := u.UserRepository.GetOneUser(id)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 	OneUserResponse := []response.GetUserResponse{}
 	copier.Copy(&OneUserResponse, &users)
@@ -61,11 +92,11 @@ func (u UserUsecase) GetOne(id string) ([]response.GetUserResponse, error) {
 }
 
 // Usecase for Update
-func (u UserUsecase) Update(id string, req response.UpdateUserResponse) error {
+func (u UserUsecase) UpdateUser(id string, req response.UpdateUserResponse) error {
 	users := entity.User{}
 	copier.Copy(&users, &req)
 
-	err := u.UserRepository.Update(id, users)
+	err := u.UserRepository.UpdateUser(id, users)
 	if err != nil {
 		return err
 	}
@@ -77,7 +108,7 @@ func (u UserUsecase) Update(id string, req response.UpdateUserResponse) error {
 func (u UserUsecase) DeleteUser(id string) ([]entity.User, error) {
 	users, err := u.UserRepository.DeleteUser(id)
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
 	return users, nil

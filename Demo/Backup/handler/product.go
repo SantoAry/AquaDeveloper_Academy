@@ -98,27 +98,31 @@ func (h ProductHandler) GetOneProduct(ctx echo.Context) error {
 // By name
 func (h ProductHandler) SearchProducts(ctx echo.Context) error {
 	product_name := ctx.QueryParam("name")
-	filtered_products, err := h.productUsecase.SearchProducts(product_name)
+	sort := ctx.QueryParam("sort_price")
+	filtered_products, err := h.productUsecase.SearchProducts(product_name, sort)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, response.ProductFilterResponse{
-			Code:    http.StatusBadRequest,
-			Message: "failed to filter products",
-			Data:    nil,
+		return ctx.JSON(http.StatusBadRequest, response.ProductSearchResponse{
+			Code:          http.StatusBadRequest,
+			Message:       "failed to filter products",
+			Search_Filter: product_name,
+			Data:          nil,
 		})
 	}
 
 	if len(filtered_products) <= 0 {
-		return ctx.JSON(http.StatusBadRequest, response.ProductFilterResponse{
-			Code:    http.StatusBadRequest,
-			Message: "no data found for this item",
-			Data:    nil,
+		return ctx.JSON(http.StatusBadRequest, response.ProductSearchResponse{
+			Code:          http.StatusBadRequest,
+			Message:       "no data found for this item",
+			Search_Filter: product_name,
+			Data:          nil,
 		})
 	}
 
-	return ctx.JSON(http.StatusOK, response.ProductFilterResponse{
-		Code:    http.StatusOK,
-		Message: "successfully filtered products",
-		Data:    filtered_products,
+	return ctx.JSON(http.StatusOK, response.ProductSearchResponse{
+		Code:          http.StatusOK,
+		Message:       "successfully filtered products",
+		Search_Filter: product_name,
+		Data:          filtered_products,
 	})
 }
 

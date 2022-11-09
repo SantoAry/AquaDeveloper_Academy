@@ -10,7 +10,7 @@ type IProductRepository interface {
 	CreateProduct(product entity.Product) error
 	GetAllProducts() ([]entity.Product, error)
 	GetOneProduct(product_id int64) ([]entity.Product, error)
-	SearchProducts(product_name string) ([]entity.Product, error)
+	SearchProducts(product_name, sort string) ([]entity.Product, error)
 	SortProducts(sort string) ([]entity.Product, error)
 }
 
@@ -47,33 +47,49 @@ func (p ProductRepository) GetOneProduct(product_id int64) ([]entity.Product, er
 	return product, nil
 }
 
-// By name
-func (p ProductRepository) SearchProducts(product_name string) ([]entity.Product, error) {
+// Search by name & sort by price (optional)
+func (p ProductRepository) SearchProducts(product_name, sort string) ([]entity.Product, error) {
 	var filtered_products []entity.Product
-	if err := p.db.Where("product_name LIKE ?", "%"+product_name+"%").Find(&filtered_products).Error; err != nil {
-		return nil, err
+
+	//Search product containing product_name AND sort by ascending or descending price
+	if sort == "ascending" || sort == "asc" {
+		if err := p.db.Where("product_name LIKE ?", "%"+product_name+"%").Order("price asc").Find(&filtered_products).Error; err != nil {
+			return nil, err
+		}
+		return filtered_products, nil
 	}
-	return filtered_products, nil
+	if sort == "descending" || sort == "desc" {
+		if err := p.db.Where("product_name LIKE ?", "%"+product_name+"%").Order("price desc").Find(&filtered_products).Error; err != nil {
+			return nil, err
+		}
+		return filtered_products, nil
+	} else //If sort is not specified, only return records containing product_name value
+
+	{
+		if err := p.db.Where("product_name LIKE ?", "%"+product_name+"%").Find(&filtered_products).Error; err != nil {
+			return nil, err
+		}
+		return filtered_products, nil
+	}
 }
 
-// By Price Order
+// Sort all products by price Order
 func (p ProductRepository) SortProducts(sort string) ([]entity.Product, error) {
 	var sort_products []entity.Product
-	var err error
 	if sort == "ascending" || sort == "asc" {
-		if err = p.db.Order("price asc").Find(&sort_products).Error; err != nil {
+		if err := p.db.Order("price asc").Find(&sort_products).Error; err != nil {
 			return nil, err
 		}
 		return sort_products, nil
 	}
 
 	if sort == "descending" || sort == "desc" {
-		if err = p.db.Order("price desc").Find(&sort_products).Error; err != nil {
+		if err := p.db.Order("price desc").Find(&sort_products).Error; err != nil {
 			return nil, err
 		}
 		return sort_products, nil
 	} else {
-		if err = p.db.Order("price " + sort).Find(&sort_products).Error; err != nil {
+		if err := p.db.Order("price " + sort).Find(&sort_products).Error; err != nil {
 			return nil, err
 		}
 		return sort_products, nil

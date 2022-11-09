@@ -2,7 +2,6 @@
 package handler
 
 import (
-	"e-commerce/config"
 	"e-commerce/entity/response"
 	"e-commerce/usecase"
 
@@ -19,6 +18,57 @@ func NewUserHandler(usercase *usecase.UserUsecase) *UserHandler {
 	return &UserHandler{userUsecase: usercase}
 }
 
+// Create a Role (Optional)
+func (h UserHandler) CreateRole(ctx echo.Context) error {
+	roleRequest := response.CreateRoleResponse{}
+	if err := ctx.Bind(&roleRequest); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.RoleBaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "invalid req body",
+			Data:    nil,
+		})
+	}
+	if err := h.userUsecase.CreateRole(roleRequest); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.RoleBaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "Failed to create role",
+			Data:    nil,
+		})
+	}
+
+	return ctx.JSON(http.StatusCreated, response.RoleBaseResponse{
+		Code:    http.StatusCreated,
+		Message: "role created successfully",
+		Data:    nil,
+	})
+}
+
+// Get list of all Roles
+func (h UserHandler) GetAllRoles(ctx echo.Context) error {
+	users, err := h.userUsecase.GetAllRoles()
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "get list roles failed",
+			Data:    nil,
+		})
+	}
+
+	if len(users) <= 0 {
+		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
+			Code:    http.StatusBadRequest,
+			Message: "no role found",
+			Data:    nil,
+		})
+	}
+	return ctx.JSON(http.StatusOK, response.UserBaseResponse{
+		Code:    http.StatusOK,
+		Message: "successfully got all roles",
+		Data:    users,
+	})
+}
+
+// Create new User
 func (h UserHandler) CreateUser(ctx echo.Context) error {
 	userRequest := response.CreateUserResponse{}
 	if err := ctx.Bind(&userRequest); err != nil {
@@ -43,8 +93,9 @@ func (h UserHandler) CreateUser(ctx echo.Context) error {
 	})
 }
 
-func (h UserHandler) GetList(ctx echo.Context) error {
-	users, err := h.userUsecase.GetList()
+// Get list of all Users
+func (h UserHandler) GetAllUsers(ctx echo.Context) error {
+	users, err := h.userUsecase.GetAllUsers()
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
@@ -68,9 +119,9 @@ func (h UserHandler) GetList(ctx echo.Context) error {
 }
 
 // Get only one user by ID
-func (h UserHandler) GetOne(ctx echo.Context) error {
+func (h UserHandler) GetOneUser(ctx echo.Context) error {
 	id := ctx.Param("id")
-	users, err := h.userUsecase.GetOne(id)
+	users, err := h.userUsecase.GetOneUser(id)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
@@ -94,8 +145,8 @@ func (h UserHandler) GetOne(ctx echo.Context) error {
 	})
 }
 
-// Update User
-func (h UserHandler) UpdateData(ctx echo.Context) error {
+// Update User by ID
+func (h UserHandler) UpdateUser(ctx echo.Context) error {
 	UpdateUser := response.UpdateUserResponse{}
 	id := ctx.Param("id")
 
@@ -107,7 +158,7 @@ func (h UserHandler) UpdateData(ctx echo.Context) error {
 		})
 	}
 
-	if err := h.userUsecase.Update(id, UpdateUser); err != nil {
+	if err := h.userUsecase.UpdateUser(id, UpdateUser); err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
 			Message: "Failed to update data",
@@ -115,7 +166,6 @@ func (h UserHandler) UpdateData(ctx echo.Context) error {
 		})
 	}
 
-	config.DB.Where("id = ?", id).Updates(&UpdateUser)
 	return ctx.JSON(http.StatusOK, response.UserBaseResponse{
 		Code:    http.StatusOK,
 		Message: "Data updated succesfully",
@@ -123,9 +173,8 @@ func (h UserHandler) UpdateData(ctx echo.Context) error {
 	})
 }
 
-// Delete User
-// Get only one user by ID
-func (h UserHandler) DeleteData(ctx echo.Context) error {
+// Delete user by ID
+func (h UserHandler) DeleteUser(ctx echo.Context) error {
 	id := ctx.Param("id")
 	users, err := h.userUsecase.DeleteUser(id)
 	if err != nil {
@@ -144,7 +193,6 @@ func (h UserHandler) DeleteData(ctx echo.Context) error {
 		})
 	}
 
-	config.DB.Delete(&users, id)
 	return ctx.JSON(http.StatusOK, response.UserBaseResponse{
 		Code:    http.StatusOK,
 		Message: "successfully deleted user with the following data",

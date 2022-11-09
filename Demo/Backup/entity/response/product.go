@@ -13,7 +13,7 @@ type ProductIDResponse struct {
 	Data       interface{} `json:"data"`
 }
 
-type ProductFilterResponse struct {
+type ProductSearchResponse struct {
 	Code          int         `json:"code"`
 	Message       string      `json:"message"`
 	Search_Filter string      `json:"search_filter"`
