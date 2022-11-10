@@ -1,0 +1,674 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "eFishery Demo",
+    "contact": {}
+  },
+  "host": "localhost:9000",
+  "basePath": "/api/e-commerce/v1",
+  "securityDefinitions": {
+    "basic": {
+      "type": "basic"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/admin/roles": {
+      "post": {
+        "summary": "Post Role (user: admin; pass: efishery)",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "PostRole(user:admin;pass:efishery)",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PostRole%28user%3Aadmin%3Bpass%3Aefishery%29Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get All Roles",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "GetAllRoles",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Create User",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "CreateUser",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      },
+      "get": {
+        "summary": "Get All Users & By Role Too",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "GetAllUsers&ByRoleToo",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/users/1": {
+      "get": {
+        "summary": "Get One User",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "GetOneUser",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/users/11": {
+      "put": {
+        "summary": "Update User (User_ID and Cart_ID const)",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "UpdateUser(User_IDandCart_IDconst)",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser%28User_IDandCart_IDconst%29Request"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "summary": "Delete User",
+        "tags": [
+          "Role & User"
+        ],
+        "operationId": "DeleteUser",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/merchant/products": {
+      "post": {
+        "summary": "Add Product",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "AddProduct",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddProductRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "Get All Products",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "GetAllProducts",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/products/1": {
+      "get": {
+        "summary": "Get Product by ID",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "GetProductbyID",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/products/search": {
+      "get": {
+        "summary": "Get Product by Name",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "GetProductbyName",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/products/sort": {
+      "get": {
+        "summary": "Sort Product by Price (Ascending and Descending)",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "SortProductbyPrice(AscendingandDescending)",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "by_price",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/products/filter": {
+      "get": {
+        "summary": "Filter by price",
+        "tags": [
+          "Products"
+        ],
+        "operationId": "Filterbyprice",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sort_type",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/carts": {
+      "get": {
+        "summary": "Cart List (Creation of Cart is embedded in Create User)",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "CartList(CreationofCartisembeddedinCreateUser)",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/users/orders": {
+      "post": {
+        "summary": "New Order by ID QueryParam",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "NewOrderbyIDQueryParam",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/NewOrderbyIDQueryParamRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get all order records",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "Getallorderrecords",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/carts/cartdetails": {
+      "get": {
+        "summary": "Get all orders added to all carts record",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "Getallordersaddedtoallcartsrecord",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/users/payment": {
+      "delete": {
+        "summary": "Payment for Orders",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "PaymentforOrders",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/invoice": {
+      "get": {
+        "summary": "Get Invoice per User",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "GetInvoiceperUser",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PostRole(user:admin;pass:efishery)Request": {
+      "title": "PostRole(user:admin;pass:efishery)Request",
+      "example": {
+        "Role_Type": "Merchant"
+      },
+      "type": "object",
+      "properties": {
+        "Role_Type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Role_Type"
+      ]
+    },
+    "CreateUserRequest": {
+      "title": "CreateUserRequest",
+      "example": {
+        "Name": "eFishery customer 3",
+        "Email": "email customer 3",
+        "Phone": "customer phone 3",
+        "Address": "customer address 3",
+        "NIK": "customer NIK 3",
+        "Role_Ref": 2
+      },
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Phone": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "NIK": {
+          "type": "string"
+        },
+        "Role_Ref": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "Name",
+        "Email",
+        "Phone",
+        "Address",
+        "NIK",
+        "Role_Ref"
+      ]
+    },
+    "UpdateUser(User_IDandCart_IDconst)Request": {
+      "title": "UpdateUser(User_IDandCart_IDconst)Request",
+      "example": {
+        "Name": "eFishery update",
+        "Email": "email update",
+        "Phone": "update phone",
+        "Address": "update address",
+        "NIK": "update NIK"
+      },
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Phone": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "NIK": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Name",
+        "Email",
+        "Phone",
+        "Address",
+        "NIK"
+      ]
+    },
+    "AddProductRequest": {
+      "title": "AddProductRequest",
+      "example": {
+        "Product_Name": "Cupang EMAS",
+        "Price": 500000
+      },
+      "type": "object",
+      "properties": {
+        "Product_Name": {
+          "type": "string"
+        },
+        "Price": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "Product_Name",
+        "Price"
+      ]
+    },
+    "NewOrderbyIDQueryParamRequest": {
+      "title": "NewOrderbyIDQueryParamRequest",
+      "example": {
+        "Product_Ref": 10,
+        "Quantity": 3,
+        "Payment_Status": false
+      },
+      "type": "object",
+      "properties": {
+        "Product_Ref": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Payment_Status": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Product_Ref",
+        "Quantity",
+        "Payment_Status"
+      ]
+    }
+  },
+  "security": [],
+  "tags": [
+    {
+      "name": "Role & User"
+    },
+    {
+      "name": "Products"
+    },
+    {
+      "name": "Orders"
+    }
+  ]
+}
