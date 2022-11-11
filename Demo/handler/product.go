@@ -128,7 +128,7 @@ func (h ProductHandler) SearchProducts(ctx echo.Context) error {
 
 // order
 func (h ProductHandler) SortProducts(ctx echo.Context) error {
-	sort := ctx.QueryParam("sort_price")
+	sort := ctx.QueryParam("by_price")
 	sorted_products, err := h.productUsecase.SortProducts(sort)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.ProductSortResponse{

@@ -28,23 +28,23 @@ type ProductSortResponse struct {
 }
 
 type CreateProductResponse struct {
-	Product_ID   int64   `json:"product_id" gorm:"column:id;type:bigint;primaryKey;autoIncrement"`
+	Product_ID   int64   `json:"product_id" gorm:"column:product_id;type:bigint;primaryKey;autoIncrement"`
 	Product_Name string  `json:"product_name"`
 	Price        float64 `json:"price"`
-	//Quantity     int     `json:"quantity"`
+	//Orders       []sub_entity.Orders `gorm:"foreignKey:Product_Ref;references:Product_ID"`
 }
 
 // Redundant, make into get response for one?
 type GetProductResponse struct {
-	Product_ID   int64   `json:"product_id" gorm:"column:id;type:bigint;primaryKey;autoIncrement"`
+	Product_ID   int64   `json:"product_id" gorm:"column:product_id;type:bigint;primaryKey;autoIncrement"`
 	Product_Name string  `json:"product_name"`
 	Price        float64 `json:"price"`
-	//Quantity     int     `json:"quantity"`
+	//Orders       []sub_entity.Orders `gorm:"foreignKey:Product_Ref;references:Product_ID"`
 }
 
 type FilterProductResponse struct {
-	Product_ID   int64   `json:"product_id" gorm:"column:id;type:bigint;primaryKey;autoIncrement"`
+	Product_ID   int64   `json:"product_id" gorm:"column:product_id;type:bigint;primaryKey;autoIncrement"`
 	Product_Name string  `json:"product_name"`
 	Price        float64 `json:"price"`
-	//Quantity     int     `json:"quantity"`
+	//Orders       []sub_entity.Orders `gorm:"foreignKey:Product_Ref;references:Product_ID"`
 }

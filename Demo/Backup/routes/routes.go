@@ -2,74 +2,124 @@
 package routes
 
 import (
+	"crypto/subtle"
 	"e-commerce/handler"
+	"e-commerce/middleware"
 
 	"github.com/labstack/echo/v4"
 )
 
 func UserRoutes(echoApp *echo.Echo, userHandler *handler.UserHandler) {
-	echoGroup := echoApp.Group("api/e-commerce/v1")
+	echoUser := echoApp.Group("api/e-commerce/v1")
+	echoAdmin := echoApp.Group("api/e-commerce/v1/admin")
 
-	//Insert user data
-	echoGroup.POST("/users", userHandler.CreateUser)
-
-	//Get all user data
-	echoGroup.GET("/users", userHandler.GetAllUsers)
-
-	//To get user data by ID
-	echoGroup.GET("/users/:id", userHandler.GetOneUser)
-
-	//To check if empty, then update data by ID (Only update non Primary Key allowed)
-	echoGroup.PUT("/users/:id", userHandler.UpdateUser)
-
-	//For existing data, update data by ID
-	echoGroup.PATCH("/users/:id", userHandler.UpdateUser)
-
-	//To delete data by ID
-	echoGroup.DELETE("/users/:id", userHandler.DeleteUser)
+	//Basic authentication for admin
+	echoAdmin.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(username), []byte("admin")) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
 
 	//Create role
-	echoGroup.POST("/roles", userHandler.CreateRole)
+	echoAdmin.POST("/roles", userHandler.CreateRole)
 
 	//Get all roles
-	echoGroup.GET("/roles", userHandler.GetAllRoles)
+	echoAdmin.GET("/roles", userHandler.GetAllRoles)
 
-	//Insert Cart
-	//r.Post("/cart_id", ....)
+	//Create user data -> Automatically create a record in Cart table
+	echoUser.POST("/users", userHandler.CreateUser)
 
-	//List users
-	//r.Get("/users", ....)
+	//Get all user data or by roles with query param ->	/users?role=Admin; Customer; Merchant
+	echoUser.GET("/users", userHandler.GetAllUsers)
 
-	//List users by id
-	//r.Get("/users/:user_id", ...)
+	//To get user data by ID
+	echoUser.GET("/users/:id", userHandler.GetOneUser)
 
-	//Insert Users
-	//r.Post("/users", userHandler.CreateUser)
-
-	//Insert cart for user
-	//r.Post("/users/:user_id/:cart_id", )
-
-	//To update data by ID
-	//r.Put("/users/:id", userHandler.UpdateData)
+	//Update user data by ID (foreign key Role_Ref must be specified) Update only non-constrained parts
+	echoUser.PUT("/users/:id", userHandler.UpdateUser)
 
 	//To delete data by ID
-	//r.Delete("/users/:id", userHandler.DeleteData)
+	echoAdmin.DELETE("/users/:id", userHandler.DeleteUser)
+
 }
 
 func ProductRoutes(echoApp *echo.Echo, productHandler *handler.ProductHandler) {
 	echoGroup := echoApp.Group("api/e-commerce/v1")
+	echoMerchant := echoApp.Group("api/e-commerce/v1/merchant")
+
+	//Basic authentication for merchant to post item
+	echoMerchant.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(username), []byte("merchant")) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
+
+	//Insert Product
+	echoMerchant.POST("/products", productHandler.CreateProduct)
+
+	//Get all Products
 	echoGroup.GET("/products", productHandler.GetProductList)
 
-	//To get data by ID
+	//Filter
+	//To get product by ID
 	echoGroup.GET("/products/:product_id", productHandler.GetOneProduct)
 
-	//Filter
-	//Search by name product
+	//Search by name product can be sorted as well
 	echoGroup.GET("/products/search", productHandler.SearchProducts)
 
 	//Order by price (descending and ascending)
 	echoGroup.GET("/products/sort", productHandler.SortProducts)
 
-	//Insert Product
-	echoGroup.POST("/products", productHandler.CreateProduct)
+	//Order by price (descending and ascending)
+	echoGroup.GET("/products/filter", productHandler.SortProductsPrice)
+}
+
+func OrderRoutes(echoApp *echo.Echo, orderHandler *handler.OrderHandler) {
+	//echoGroup := echoApp.Group("api/e-commerce/v1")
+	echoAdmin := echoApp.Group("api/e-commerce/v1/admin")
+	echoUser := echoApp.Group("api/e-commerce/v1/users")
+
+	//Basic authentication for admin
+	echoAdmin.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(username), []byte("admin")) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
+
+	//Basic authentication for users
+	echoUser.Use(middleware.BasicAuth(func(user_id, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(user_id), []byte(user_id)) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
+
+	//List all Carts
+	echoAdmin.GET("/carts", orderHandler.GetAllCarts)
+
+	//User make order
+	echoUser.POST("/user/orders", orderHandler.CreateOrder)
+
+	//Get all orders
+	echoAdmin.GET("/active_order", orderHandler.GetAllOrders)
+
+	//List all Cart Details
+	echoUser.GET("/carts/cartdetails", orderHandler.GetAllCartDetails)
+
+	//Pay for orders -> Remove item from cart
+	echoUser.DELETE("/payment", orderHandler.DeleteOrder)
+
+	//Get invoice by ID
+	echoUser.GET("/invoice", orderHandler.GetInvoiceByID)
 }

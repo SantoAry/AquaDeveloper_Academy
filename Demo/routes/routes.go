@@ -10,7 +10,7 @@ import (
 )
 
 func UserRoutes(echoApp *echo.Echo, userHandler *handler.UserHandler) {
-	echoUser := echoApp.Group("api/e-commerce/v1")
+	echoGroup := echoApp.Group("api/e-commerce/v1")
 	echoAdmin := echoApp.Group("api/e-commerce/v1/admin")
 
 	//Basic authentication for admin
@@ -30,16 +30,17 @@ func UserRoutes(echoApp *echo.Echo, userHandler *handler.UserHandler) {
 	echoAdmin.GET("/roles", userHandler.GetAllRoles)
 
 	//Create user data -> Automatically create a record in Cart table
-	echoUser.POST("/users", userHandler.CreateUser)
+	echoGroup.POST("/users", userHandler.CreateUser)
 
 	//Get all user data or by roles with query param ->	/users?role=Admin; Customer; Merchant
-	echoUser.GET("/users", userHandler.GetAllUsers)
+	//Need admin authorization, if need to open to all access change echoAdmin to echoUser
+	echoAdmin.GET("/users", userHandler.GetAllUsers)
 
 	//To get user data by ID
-	echoUser.GET("/users/:id", userHandler.GetOneUser)
+	echoGroup.GET("/users/:id", userHandler.GetOneUser)
 
 	//Update user data by ID (foreign key Role_Ref must be specified) Update only non-constrained parts
-	echoUser.PUT("/users/:id", userHandler.UpdateUser)
+	echoGroup.PUT("/users/:id", userHandler.UpdateUser)
 
 	//To delete data by ID
 	echoAdmin.DELETE("/users/:id", userHandler.DeleteUser)
@@ -81,7 +82,6 @@ func ProductRoutes(echoApp *echo.Echo, productHandler *handler.ProductHandler) {
 }
 
 func OrderRoutes(echoApp *echo.Echo, orderHandler *handler.OrderHandler) {
-	//echoGroup := echoApp.Group("api/e-commerce/v1")
 	echoAdmin := echoApp.Group("api/e-commerce/v1/admin")
 	echoUser := echoApp.Group("api/e-commerce/v1/users")
 

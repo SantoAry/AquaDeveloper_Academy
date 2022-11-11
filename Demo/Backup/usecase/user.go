@@ -16,7 +16,7 @@ type IUserUseCase interface {
 
 	//User
 	CreateUser(user response.CreateUserResponse) error
-	GetAllUsers() ([]response.GetUserResponse, error)
+	GetAllUsers(role string) ([]response.GetUserResponse, error)
 	GetOneUser(id string) (response.GetUserResponse, error)
 	UpdateUser(id string, user entity.User) error
 	DeleteUser(id string) (response.DeleteUserResponse, error)
@@ -68,8 +68,8 @@ func (u UserUsecase) CreateUser(req response.CreateUserResponse) error {
 	return nil
 }
 
-func (u UserUsecase) GetAllUsers() ([]response.GetUserResponse, error) {
-	users, err := u.UserRepository.GetAllUsers()
+func (u UserUsecase) GetAllUsers(role string) ([]response.GetUserResponse, error) {
+	users, err := u.UserRepository.GetAllUsers(role)
 	if err != nil {
 		return nil, err
 	}

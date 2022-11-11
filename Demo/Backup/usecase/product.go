@@ -17,6 +17,7 @@ type IProductUseCase interface {
 	GetOneProduct(product_id int) (response.GetProductResponse, int64, error)
 	SearchProducts(product_name, sort string) ([]response.GetProductResponse, error)
 	SortProducts(sort string) ([]response.GetProductResponse, error)
+	SortProductsPrice(sort, price string) ([]response.GetProductResponse, error)
 }
 
 type ProductUsecase struct {
@@ -84,4 +85,19 @@ func (p ProductUsecase) SortProducts(sort string) ([]response.GetProductResponse
 	copier.Copy(&sorted_products, &products) //Override dari variabel kanan ke kiri
 
 	return sorted_products, nil
+}
+
+func (p ProductUsecase) SortProductsPrice(sort, price string) ([]response.GetProductResponse, error) {
+	price_float, _ := strconv.ParseFloat(price, 64)
+	sort = strings.ToLower(sort)
+
+	products, err := p.ProductRepository.SortProductsPrice(sort, price_float)
+	if err != nil {
+		return nil, err
+	}
+
+	sortedprice_products := []response.GetProductResponse{}
+	copier.Copy(&sortedprice_products, &products) //Override dari variabel kanan ke kiri
+
+	return sortedprice_products, nil
 }

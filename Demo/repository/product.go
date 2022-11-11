@@ -82,19 +82,17 @@ func (p ProductRepository) SortProducts(sort string) ([]entity.Product, error) {
 			return nil, err
 		}
 		return sort_products, nil
-	}
-
-	if sort == "descending" || sort == "desc" {
+	} else if sort == "descending" || sort == "desc" {
 		if err := p.db.Order("price desc").Find(&sort_products).Error; err != nil {
 			return nil, err
 		}
 		return sort_products, nil
-	} else {
-		if err := p.db.Order("price " + sort).Find(&sort_products).Error; err != nil {
-			return nil, err
-		}
-		return sort_products, nil
 	}
+
+	if err := p.db.Order("price " + sort).Find(&sort_products).Error; err != nil {
+		return nil, err
+	}
+	return sort_products, nil
 }
 
 func (p ProductRepository) SortProductsPrice(sort string, price_float float64) ([]entity.Product, error) {

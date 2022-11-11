@@ -1,7 +1,5 @@
 package response
 
-import "e-commerce/entity"
-
 // Role
 type RoleBaseResponse struct {
 	Code    int         `json:"code"`
@@ -10,15 +8,13 @@ type RoleBaseResponse struct {
 }
 
 type CreateRoleResponse struct {
-	Role_ID   int64         `json:"role_id" gorm:"column:role_id;type:bigint;primaryKey;autoIncrement"`
-	Role_Type string        `json:"role_type"`
-	User      []entity.User `gorm:"constraint;foreignKey:Role_Ref;references:Role_ID"`
+	Role_ID   int64  `json:"role_id" gorm:"column:role_id;type:bigint;primaryKey;autoIncrement"`
+	Role_Type string `json:"role_type"`
 }
 
 type GetRoleResponse struct {
-	Role_ID   int64         `json:"role_id" gorm:"column:role_id;type:bigint;primaryKey;autoIncrement"`
-	Role_Type string        `json:"role_type"`
-	User      []entity.User `gorm:"constraint;foreignKey:Role_Ref;references:Role_ID"`
+	Role_ID   int64  `json:"role_id" gorm:"column:role_id;type:bigint;primaryKey;autoIncrement"`
+	Role_Type string `json:"role_type"`
 }
 
 // User
@@ -36,6 +32,7 @@ type CreateUserResponse struct {
 	Address  string `json:"address"`
 	NIK      string `json:"NIK"`
 	Role_Ref int64  `json:"role_ref"`
+	Cart_ID  int64
 }
 
 type UpdateUserResponse struct {
@@ -46,6 +43,7 @@ type UpdateUserResponse struct {
 	Address  string `json:"address"`
 	NIK      string `json:"NIK"`
 	Role_Ref int64  `json:"role_ref"`
+	Cart_ID  int64
 }
 
 type GetUserResponse struct {
@@ -56,6 +54,7 @@ type GetUserResponse struct {
 	Address  string `json:"address"`
 	NIK      string `json:"NIK"`
 	Role_Ref int64  `json:"role_ref"`
+	Cart_ID  int64
 }
 
 // Need to be reworked, delete by ID
@@ -67,4 +66,5 @@ type DeleteUserResponse struct {
 	Address  string `json:"address"`
 	NIK      string `json:"NIK"`
 	Role_Ref int64  `json:"role_ref"`
+	Cart_ID  int64
 }

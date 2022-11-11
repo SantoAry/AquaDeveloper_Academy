@@ -128,7 +128,7 @@ func (h ProductHandler) SearchProducts(ctx echo.Context) error {
 
 // order
 func (h ProductHandler) SortProducts(ctx echo.Context) error {
-	sort := ctx.QueryParam("sort_price")
+	sort := ctx.QueryParam("by_price")
 	sorted_products, err := h.productUsecase.SortProducts(sort)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.ProductSortResponse{
@@ -151,6 +151,37 @@ func (h ProductHandler) SortProducts(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, response.ProductSortResponse{
 		Code:      http.StatusOK,
 		Message:   "successfully sorted product data",
+		Sort_Type: sort,
+		Data:      sorted_products,
+	})
+}
+
+// filter price
+func (h ProductHandler) SortProductsPrice(ctx echo.Context) error {
+	sort := ctx.QueryParam("sort_type")
+	price := ctx.QueryParam("price")
+	sorted_products, err := h.productUsecase.SortProductsPrice(sort, price)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ProductSortResponse{
+			Code:      http.StatusBadRequest,
+			Message:   "sort type invalid (available sort type:more;less)",
+			Sort_Type: sort,
+			Data:      nil,
+		})
+	}
+	//need to test when theres nothing
+	if len(sorted_products) <= 0 {
+		return ctx.JSON(http.StatusBadRequest, response.ProductSortResponse{
+			Code:      http.StatusBadRequest,
+			Message:   "no products are available",
+			Sort_Type: sort,
+			Data:      nil,
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, response.ProductSortResponse{
+		Code:      http.StatusOK,
+		Message:   "successfully filtered product by price",
 		Sort_Type: sort,
 		Data:      sorted_products,
 	})

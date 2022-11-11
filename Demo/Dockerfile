@@ -1,22 +1,34 @@
-FROM golang:alpine AS builder
+# Start from golang base image
+FROM golang:alpine as builder
 
-#BUILD
-COPY . /app
+# Enable go modules
+ENV GO111MODULE=on
+
+# Install git. (alpine image does not have git in it)
+RUN apk update && apk add --no-cache git
+
+# Set current working directory
 WORKDIR /app
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    ca-certificates \
-    && update-ca-certificates 2>/dev/null || true
-RUN mkdir app && \
-    mkdir app/resources && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o /app/echo
-RUN ls app
 
-# SERVE
-FROM busybox
+# Copy go mod and sum files
+COPY go.mod ./
+COPY go.sum ./
 
-COPY --from=builder /app/ /app
-WORKDIR /app
-EXPOSE 9000
-CMD ["./echo"]
+# Download all dependencies.
+RUN go mod download
+
+# Now, copy the source code
+COPY . .
+
+# Build the application.
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./bin/main .
+
+# Finally our multi-stage to build a small image
+# Start a new stage from scratch
+FROM scratch
+
+# Copy the Pre-built binary file
+COPY --from=builder /app/bin/main .
+
+# Run executable
+CMD ["./main"]

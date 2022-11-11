@@ -95,11 +95,12 @@ func (h UserHandler) CreateUser(ctx echo.Context) error {
 
 // Get list of all Users
 func (h UserHandler) GetAllUsers(ctx echo.Context) error {
-	users, err := h.userUsecase.GetAllUsers()
+	role := ctx.QueryParam("role")
+	users, err := h.userUsecase.GetAllUsers(role)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
-			Message: "get list users failed",
+			Message: "get list users failed (find unsuccessful or role type invalid)",
 			Data:    nil,
 		})
 	}
@@ -107,7 +108,7 @@ func (h UserHandler) GetAllUsers(ctx echo.Context) error {
 	if len(users) <= 0 {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
-			Message: "no user found",
+			Message: "no user found or role type invalid",
 			Data:    nil,
 		})
 	}
@@ -161,7 +162,7 @@ func (h UserHandler) UpdateUser(ctx echo.Context) error {
 	if err := h.userUsecase.UpdateUser(id, UpdateUser); err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.UserBaseResponse{
 			Code:    http.StatusBadRequest,
-			Message: "Failed to update data",
+			Message: "Failed to update data or unauthorized access",
 			Data:    nil,
 		})
 	}

@@ -1,21 +1,48 @@
 version: '1'
 
 services:
+  # Main postgresql database
   db:
-    image: postgres:12-alpine
-    ports: 
-      - "5432:5432"
+    image: postgres:13
+    container_name: postgres
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespass
       POSTGRES_DB: efisherydemo
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
-      - "5050:9000"
-    depends_on:
-      - db
+      - 5432:5432
     networks:
-      - default
+      - projectnetwork
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  # The main service
+  efisherydemo:
+    container_name: efisherydemo
+    image: xanthos5/efisherydemo:latest
+    build: .
+    ports:
+      - 9000:9000
+    restart: always
+    environment:
+      - DB_URL=host=postgres user=postgres password=postgrespass dbname=efisherydemo port=5432
+    volumes:
+      - .:/app
+    networks:
+      - projectnetwork
+    depends_on:
+      db :
+        condition: service_healthy
+
+networks:
+  projectnetwork:
+    name: projectnetwork
+volumes:
+  db:
+  pg-admin:
+  web:

@@ -11,7 +11,7 @@ import (
 
 type IOrderUseCase interface {
 	//Invoice
-	GetInvoiceByID(id string) ([]response.GetInvoiceResponse, int64, error)
+	GetInvoiceByID(id string) ([]sub_entity.Invoice, int64, error)
 
 	//Cart
 	//Cart creation is made from user creation
@@ -20,7 +20,7 @@ type IOrderUseCase interface {
 	//Order
 	CreateOrder(req response.GetOrderResponse, user_id string) error
 	GetAllOrders() ([]response.GetOrderResponse, error)
-	DeleteOrder(id string) ([]sub_entity.Orders, error)
+	DeleteOrder(id string) ([]response.GetOrderResponse, error)
 
 	//Cart Details
 	GetAllCartDetails(user_id string) ([]response.CartDetailsResponse, error)
@@ -83,23 +83,23 @@ func (o OrderUsecase) GetAllCartDetails(user_id string) ([]response.CartDetailsR
 }
 
 // Usecase for DeleteOrder
-func (o OrderUsecase) DeleteOrder(id string) ([]sub_entity.Orders, error) {
+func (o OrderUsecase) DeleteOrder(id string) ([]response.GetOrderResponse, error) {
 	orders, err := o.OrderRepository.DeleteOrder(id)
 	if err != nil {
 		return nil, err
 	}
-
-	return orders, nil
+	orderResponse := []response.GetOrderResponse{}
+	copier.Copy(&orderResponse, &orders)
+	return orderResponse, nil
 }
 
 // Get invoice by ID
-func (o OrderUsecase) GetInvoiceByID(id string) ([]response.GetInvoiceResponse, int64, error) {
+func (o OrderUsecase) GetInvoiceByID(id string) ([]sub_entity.Invoice, int64, error) {
 	user_id, _ := strconv.ParseInt(id, 0, 64)
-	invoice, err := o.OrderRepository.GetInvoiceByID(id)
+	Invoice, err := o.OrderRepository.GetInvoiceByID(id)
 	if err != nil {
 		return nil, 0, nil
 	}
-	InvoiceID := []response.GetInvoiceResponse{}
-	copier.Copy(&InvoiceID, &invoice)
-	return InvoiceID, user_id, nil
+
+	return Invoice, user_id, nil
 }

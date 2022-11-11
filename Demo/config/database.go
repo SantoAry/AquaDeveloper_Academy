@@ -1,10 +1,9 @@
 package config
 
 import (
-	"os"
-
 	"e-commerce/entity"
 	"e-commerce/entity/sub_entity"
+	"os"
 
 	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
