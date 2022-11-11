@@ -7,14 +7,9 @@ import (
 	"e-commerce/repository"
 	"e-commerce/routes"
 	"e-commerce/usecase"
-	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
-
-func mainAdmin(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "YOU GOT IT")
-}
 
 func main() {
 	config.Database()

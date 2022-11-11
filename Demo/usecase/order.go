@@ -23,7 +23,7 @@ type IOrderUseCase interface {
 	DeleteOrder(id string) ([]sub_entity.Orders, error)
 
 	//Cart Details
-	GetAllCartDetails() ([]response.CartDetailsResponse, error)
+	GetAllCartDetails(user_id string) ([]response.CartDetailsResponse, error)
 }
 
 type OrderUsecase struct {
@@ -70,8 +70,9 @@ func (o OrderUsecase) GetAllOrders() ([]response.GetOrderResponse, error) {
 	return allorders, nil
 }
 
-func (o OrderUsecase) GetAllCartDetails() ([]response.CartDetailsResponse, error) {
-	cartdetails, err := o.OrderRepository.GetAllCartDetails()
+func (o OrderUsecase) GetAllCartDetails(user_id string) ([]response.CartDetailsResponse, error) {
+	id, _ := strconv.ParseInt(user_id, 0, 64)
+	cartdetails, err := o.OrderRepository.GetAllCartDetails(id)
 	if err != nil {
 		return nil, err
 	}

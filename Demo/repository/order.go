@@ -22,7 +22,7 @@ type IOrderRepository interface {
 	DeleteOrder(id string) ([]sub_entity.Orders, error)
 
 	//Cart Details
-	GetAllCartDetails() ([]sub_entity.CartDetails, error)
+	GetAllCartDetails(user_id int64) ([]sub_entity.CartDetails, error)
 }
 
 type OrderRepository struct {
@@ -77,10 +77,30 @@ func (o OrderRepository) GetAllOrders() ([]sub_entity.Orders, error) {
 }
 
 // Get all cart details
-func (o OrderRepository) GetAllCartDetails() ([]sub_entity.CartDetails, error) {
+func (o OrderRepository) GetAllCartDetails(user_id int64) ([]sub_entity.CartDetails, error) {
 	var cartdetails []sub_entity.CartDetails
-	if err := o.db.Find(&cartdetails).Error; err != nil {
+	var cart sub_entity.Cart
+	var user entity.User
+	//var role entity.Role
+
+	//Join user with cart
+	if err := o.db.Joins("INNER JOIN users on users.user_id=carts.user_ref").Group("carts.cart_id").Where("carts.user_ref=?", user_id).Find(&cart).Error; err != nil {
 		return nil, err
+	}
+
+	//Getting role_ref from user
+	if err := o.db.Joins("INNER JOIN carts on carts.user_ref=users.user_id").Group("users.user_id").Where("carts.user_ref=?", user_id).Find(&user).Error; err != nil {
+		return nil, err
+	}
+
+	if user.Role_Ref == 2 || user.Role_Ref == 3 {
+		if err := o.db.Where("cart_ref = ?", cart.Cart_ID).Find(&cartdetails).Error; err != nil {
+			return nil, err
+		}
+	} else {
+		if err := o.db.Find(&cartdetails).Error; err != nil {
+			return nil, err
+		}
 	}
 	return cartdetails, nil
 }

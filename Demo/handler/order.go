@@ -16,7 +16,7 @@ func NewOrderHandler(ordercase *usecase.OrderUsecase) *OrderHandler {
 	return &OrderHandler{orderUsecase: ordercase}
 }
 
-// Get list of all Users
+// Get list of all Carts (for admin)
 func (o OrderHandler) GetAllCarts(ctx echo.Context) error {
 	carts, err := o.orderUsecase.GetAllCarts()
 	if err != nil {
@@ -41,7 +41,7 @@ func (o OrderHandler) GetAllCarts(ctx echo.Context) error {
 	})
 }
 
-// Create Order
+// Create Order (for users)
 func (o OrderHandler) CreateOrder(ctx echo.Context) error {
 	user_id := ctx.QueryParam("user_id")
 	createOrder := response.CreateOrderResponse{}
@@ -70,7 +70,8 @@ func (o OrderHandler) CreateOrder(ctx echo.Context) error {
 }
 
 func (o OrderHandler) GetAllCartDetails(ctx echo.Context) error {
-	cartdetails, err := o.orderUsecase.GetAllCartDetails()
+	user_id := ctx.QueryParam("user_id")
+	cartdetails, err := o.orderUsecase.GetAllCartDetails(user_id)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, response.CartBaseResponse{
 			Code:    http.StatusBadRequest,

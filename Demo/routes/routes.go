@@ -81,23 +81,45 @@ func ProductRoutes(echoApp *echo.Echo, productHandler *handler.ProductHandler) {
 }
 
 func OrderRoutes(echoApp *echo.Echo, orderHandler *handler.OrderHandler) {
-	echoGroup := echoApp.Group("api/e-commerce/v1")
+	//echoGroup := echoApp.Group("api/e-commerce/v1")
+	echoAdmin := echoApp.Group("api/e-commerce/v1/admin")
+	echoUser := echoApp.Group("api/e-commerce/v1/users")
+
+	//Basic authentication for admin
+	echoAdmin.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(username), []byte("admin")) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
+
+	//Basic authentication for users
+	echoUser.Use(middleware.BasicAuth(func(user_id, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(user_id), []byte(user_id)) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("efishery")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	}))
 
 	//List all Carts
-	echoGroup.GET("/carts", orderHandler.GetAllCarts)
+	echoAdmin.GET("/carts", orderHandler.GetAllCarts)
 
 	//User make order
-	echoGroup.POST("/users/orders", orderHandler.CreateOrder)
+	echoUser.POST("/user/orders", orderHandler.CreateOrder)
 
 	//Get all orders
-	echoGroup.GET("/orders", orderHandler.GetAllOrders)
+	echoAdmin.GET("/active_order", orderHandler.GetAllOrders)
 
 	//List all Cart Details
-	echoGroup.GET("/carts/cartdetails", orderHandler.GetAllCartDetails)
+	echoUser.GET("/carts/cartdetails", orderHandler.GetAllCartDetails)
 
 	//Pay for orders -> Remove item from cart
-	echoGroup.DELETE("/users/payment", orderHandler.DeleteOrder)
+	echoUser.DELETE("/payment", orderHandler.DeleteOrder)
 
 	//Get invoice by ID
-	echoGroup.GET("/invoice", orderHandler.GetInvoiceByID)
+	echoUser.GET("/invoice", orderHandler.GetInvoiceByID)
 }
