@@ -80,7 +80,7 @@
         ]
       }
     },
-    "/users": {
+    "/admin/users": {
       "post": {
         "summary": "Create User",
         "tags": [
@@ -107,10 +107,13 @@
             "description": "",
             "headers": {}
           }
-        }
-      }
-    },
-    "/admin/users": {
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      },
       "get": {
         "summary": "Get All Users & By Role Too (With QueryParam)",
         "tags": [
@@ -153,7 +156,9 @@
             "headers": {}
           }
         }
-      },
+      }
+    },
+    "/users/13": {
       "put": {
         "summary": "Update User (User_ID and Cart_ID const)",
         "tags": [
@@ -184,7 +189,7 @@
         "security": []
       }
     },
-    "/admin/users/12": {
+    "/admin/users/13": {
       "delete": {
         "summary": "Delete User",
         "tags": [
@@ -583,7 +588,7 @@
     "PostRole(user:admin;pass:efishery)Request": {
       "title": "PostRole(user:admin;pass:efishery)Request",
       "example": {
-        "Role_Type": "Investor 2"
+        "Role_Type": "Businessman"
       },
       "type": "object",
       "properties": {
@@ -639,7 +644,7 @@
     "UpdateUser(User_IDandCart_IDconst)Request": {
       "title": "UpdateUser(User_IDandCart_IDconst)Request",
       "example": {
-        "Name": "eFishery update",
+        "Name": "eFishery update again",
         "Email": "email update",
         "Phone": "update phone",
         "Address": "update address",
@@ -674,8 +679,8 @@
     "AddProductRequest": {
       "title": "AddProductRequest",
       "example": {
-        "Product_Name": "Cupang Platinum 2",
-        "Price": 1000000
+        "Product_Name": "Cupang Hoki",
+        "Price": 7777777
       },
       "type": "object",
       "properties": {

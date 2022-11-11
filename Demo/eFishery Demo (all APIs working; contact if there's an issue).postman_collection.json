@@ -31,7 +31,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Role_Type\":\"Investor 2\"\r\n}",
+							"raw": "{\r\n    \"Role_Type\":\"Businessman\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -97,6 +97,21 @@
 				{
 					"name": "Create User",
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "efishery",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -109,7 +124,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9000/api/e-commerce/v1/users",
+							"raw": "http://localhost:9000/api/e-commerce/v1/admin/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -119,6 +134,7 @@
 								"api",
 								"e-commerce",
 								"v1",
+								"admin",
 								"users"
 							]
 						}
@@ -196,7 +212,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"eFishery update\",\r\n    \"Email\": \"email update\",\r\n    \"Phone\": \"update phone\",\r\n    \"Address\": \"update address\",\r\n    \"NIK\": \"update NIK\"\r\n}\r\n    ",
+							"raw": "{\r\n    \"Name\": \"eFishery update again\",\r\n    \"Email\": \"email update\",\r\n    \"Phone\": \"update phone\",\r\n    \"Address\": \"update address\",\r\n    \"NIK\": \"update NIK\"\r\n}\r\n    ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -204,7 +220,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9000/api/e-commerce/v1/users/11",
+							"raw": "http://localhost:9000/api/e-commerce/v1/users/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -215,7 +231,7 @@
 								"e-commerce",
 								"v1",
 								"users",
-								"11"
+								"13"
 							]
 						}
 					},
@@ -251,7 +267,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9000/api/e-commerce/v1/admin/users/12",
+							"raw": "http://localhost:9000/api/e-commerce/v1/admin/users/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -263,7 +279,7 @@
 								"v1",
 								"admin",
 								"users",
-								"12"
+								"13"
 							]
 						}
 					},
@@ -296,7 +312,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Product_Name\": \"Cupang Platinum 2\",\r\n    \"Price\": 1000000\r\n}",
+							"raw": "{\r\n    \"Product_Name\": \"Cupang Hoki\",\r\n    \"Price\": 7777777\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,7 +483,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/e-commerce/v1/products/filter?sort_type=less&price=10000",
+							"raw": "http://localhost:9000/api/e-commerce/v1/products/filter?sort_type=more&price=1000",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -483,11 +499,11 @@
 							"query": [
 								{
 									"key": "sort_type",
-									"value": "less"
+									"value": "more"
 								},
 								{
 									"key": "price",
-									"value": "10000"
+									"value": "1000"
 								}
 							]
 						}
@@ -695,7 +711,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:9000/api/e-commerce/v1/users/payment?order_id=39",
+							"raw": "http://localhost:9000/api/e-commerce/v1/users/payment?order_id=40",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -711,7 +727,7 @@
 							"query": [
 								{
 									"key": "order_id",
-									"value": "39"
+									"value": "40"
 								}
 							]
 						}

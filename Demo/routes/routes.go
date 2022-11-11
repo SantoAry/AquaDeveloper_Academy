@@ -30,7 +30,7 @@ func UserRoutes(echoApp *echo.Echo, userHandler *handler.UserHandler) {
 	echoAdmin.GET("/roles", userHandler.GetAllRoles)
 
 	//Create user data -> Automatically create a record in Cart table
-	echoGroup.POST("/users", userHandler.CreateUser)
+	echoAdmin.POST("/users", userHandler.CreateUser)
 
 	//Get all user data or by roles with query param ->	/users?role=Admin; Customer; Merchant
 	//Need admin authorization, if need to open to all access change echoAdmin to echoUser

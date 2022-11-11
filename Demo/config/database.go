@@ -22,12 +22,12 @@ func Database() {
 
 func AutoMigrate() {
 	DB.AutoMigrate(
-		&entity.User{},
 		&entity.Role{},
+		&entity.User{},
 		&entity.Product{},
 		&sub_entity.Cart{},
-		&sub_entity.CartDetails{},
 		&sub_entity.Orders{},
+		&sub_entity.CartDetails{},
 		&sub_entity.Invoice{},
 	)
 }

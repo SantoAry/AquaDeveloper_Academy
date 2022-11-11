@@ -6,7 +6,7 @@ package sub_entity
 type Cart struct {
 	Cart_ID     int64         `json:"cart_id" gorm:"column:cart_id;type:bigint;primaryKey;autoIncrement"`
 	User_Ref    int64         `json:"user_ref"` //Foreign key
-	CartDetails []CartDetails `gorm:"foreignKey:Cart_Ref;references:Cart_ID;constraint:OnUpdate:SETNULL,OnDelete:SET NULL"`
+	CartDetails []CartDetails `gorm:"foreignKey:Cart_Ref;references:Cart_ID;constraint:OnUpdate:SET NULL,OnDelete:SET NULL"`
 }
 
 type CartDetails struct {
