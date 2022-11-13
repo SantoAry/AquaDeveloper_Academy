@@ -17,6 +17,7 @@ Diperlukan sistem API untuk e-commerce produk pakan eFishery, khususnya untuk eM
 Berikut adalah Entity Relationship Diagram (ERD) dari API ini:
 
 ![alt text](FinalProjectERD.png "Gambar.1 ERD of API e-Commerce")
+							Gambar.1 ERD of API e-Commerce
 
 Pada gambar.1 terdapat beberap tabel berupa Roles, Users, Carts, Cart_Details, Orders, Products, dan Invoice. Apa fungsi untuk masing-masing tabel?
 * Roles -> Berfungsi untuk menetapkan roles yang ada untuk User_ID pada Users
@@ -48,13 +49,13 @@ Kode API ini dibentuk dengan CLEAN architecture dimana packages, entities, error
 ## Dokumentasi API
 Dokumentasi API dilakukan dalam bentuk file .json yang dapat di import kepada Postman, atau dibentuk pada Swagger.
 
-![[PostMan.PNG]]
+![alt text](PostMan.PNG "Gambar.2 Dokumentasi API Pada Postman")
 												Gambar.2 Dokumentasi API Pada Postman
 
 Kemudian dengan mengisi editor.swagger.io dengan isi (For Swagger .json), didapatkan dokumentasi API pada Swagger seperti berikut.
 
-![[Swagger.PNG]]
-											Gambar.3 Dokumentasi API Pada Postman
+![alt text](Swagger.PNG "Gambar.3 Dokumentasi API Pada Swagger")
+											Gambar.3 Dokumentasi API Pada Swagger
 
 Pada API Role & User, digunakan middleware basic auth untuk route group (/admin). 
 * username: admin
