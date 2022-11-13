@@ -50,6 +50,7 @@ Kode API ini dibentuk dengan CLEAN architecture dimana packages, entities, error
 Dokumentasi API dilakukan dalam bentuk file .json yang dapat di import kepada Postman, atau dibentuk pada Swagger.
 
 ![alt text](PostMan.PNG "Gambar.2 Dokumentasi API Pada Postman")
+												
 												Gambar.2 Dokumentasi API Pada Postman
 
 Kemudian dengan mengisi editor.swagger.io dengan isi (For Swagger .json), didapatkan dokumentasi API pada Swagger seperti berikut.
