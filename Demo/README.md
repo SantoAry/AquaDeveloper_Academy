@@ -16,8 +16,7 @@ Diperlukan sistem API untuk e-commerce produk pakan eFishery, khususnya untuk eM
 
 Berikut adalah Entity Relationship Diagram (ERD) dari API ini:
 
-![[Academy/Demo/FinalProjectERD.png]]
-												Gambar.1 ERD of API e-Commerce
+![alt text](FinalProjectERD.png "Gambar.1 ERD of API e-Commerce")
 
 Pada gambar.1 terdapat beberap tabel berupa Roles, Users, Carts, Cart_Details, Orders, Products, dan Invoice. Apa fungsi untuk masing-masing tabel?
 * Roles -> Berfungsi untuk menetapkan roles yang ada untuk User_ID pada Users
